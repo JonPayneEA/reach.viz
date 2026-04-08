@@ -1,0 +1,123 @@
+---
+title: "reach.viz: flood visualisation for the Flode ecosystem"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{reach.viz overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 7,
+  fig.height = 4,
+  dpi = 120
+)
+library(reach.viz)
+library(data.table)
+```
+
+`reach.viz` provides the team's standard ggplot2 theme and a catalogue of
+flood-specific plot functions. Every function accepts a `data.table` input and
+returns a `ggplot` object that can be composed with further layers.
+
+---
+
+## Theme
+
+```{r theme-example}
+library(ggplot2)
+ggplot(data.frame(x = 1:10, y = cumsum(rnorm(10))), aes(x, y)) +
+  geom_line(colour = "#009FAF", linewidth = 0.8) +
+  labs(title = "theme_flood() example", x = "Time step", y = "Value") +
+  theme_flood()
+```
+
+---
+
+## Hydrometric time series
+
+```{r hydrograph-example}
+dt <- make_hydro_dt()
+plot_hydrograph(dt[site_id == "SITE_A"], title = "Hourly flow: Site A")
+```
+
+```{r hydrograph-facet}
+plot_hydrograph(dt, site_col = "site_id", title = "Both sites")
+```
+
+---
+
+## QC overview
+
+```{r qc-heatmap}
+plot_qc_heatmap(dt, period = "month")
+```
+
+```{r data-availability}
+plot_data_availability(dt)
+```
+
+---
+
+## Ensemble forecasts
+
+```{r ensemble-ribbon}
+ens <- make_ensemble_dt()
+plot_ensemble_ribbon(ens)
+```
+
+```{r ensemble-spaghetti}
+plot_ensemble_spaghetti(ens, alpha = 0.2)
+```
+
+```{r exceedance}
+plot_exceedance_probability(ens, thresholds = c(Alert = 50, Warning = 90, Severe = 130))
+```
+
+---
+
+## Model performance
+
+```{r obs-sim-scatter}
+obs_sim <- make_obs_sim_dt()
+plot_obs_sim_scatter(obs_sim, colour_by = "period")
+```
+
+```{r residuals}
+res <- make_residual_dt()
+plot_residuals(res)
+```
+
+```{r metrics}
+perf <- make_performance_dt()
+plot_performance_metrics(perf, thresholds = c(NSE = 0.6, KGE = 0.6))
+```
+
+---
+
+## Condition assessment
+
+```{r condition-radar}
+cond <- make_condition_dt()
+plot_condition_factors(cond)
+```
+
+```{r condition-register}
+reg <- make_register_dt()
+plot_condition_register(reg)
+```
+
+---
+
+## Model cascade
+
+The cascade diagram requires `ggraph` and `igraph`:
+
+```{r cascade, eval = requireNamespace("ggraph", quietly = TRUE) && requireNamespace("igraph", quietly = TRUE)}
+conn <- make_connections_dt()
+reg  <- make_register_dt()
+plot_model_cascade(conn, reg)
+```

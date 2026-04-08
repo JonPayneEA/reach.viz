@@ -1,0 +1,37 @@
+Package: reach.viz
+Title: Flood Visualisation Module for the Flode Ecosystem
+Version: 0.1.0
+Authors@R:
+    person("Jonathan", "Payne", role = c("aut", "cre"),
+           email = "jonathan.payne@environment-agency.gov.uk")
+Description: Standardised ggplot2-compatible chart themes and flood-specific
+    plot functions for the F&W team's Flode R package ecosystem. Provides a
+    consistent visual identity (theme_flood, QC flag scales, condition rating
+    scales) and a catalogue of plot functions covering hydrometric time series,
+    ensemble forecasts, model performance validation, condition assessment, and
+    model cascade diagrams. All data manipulation uses data.table; no tidyverse
+    dependency.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.2.0)
+Imports:
+    data.table (>= 1.15.0),
+    ggplot2 (>= 3.5.0),
+    scales (>= 1.3.0),
+    S7 (>= 0.2.0)
+Suggests:
+    ggraph (>= 2.2.0),
+    igraph (>= 2.0.0),
+    covr,
+    devtools,
+    knitr,
+    lintr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+URL: https://github.com/JonPayneEA/reach.viz
+BugReports: https://github.com/JonPayneEA/reach.viz/issues
