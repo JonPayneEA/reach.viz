@@ -26,3 +26,6 @@ utils::globalVariables(c(
 .onLoad <- function(libname, pkgname) {
   invisible(NULL)
 }
+
+# Set package to being data.table aware
+.datatable.aware = TRUE
